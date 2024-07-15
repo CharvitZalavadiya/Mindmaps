@@ -1,15 +1,42 @@
 "use client";
 import { usePathname } from "next/navigation";
-
 import Link from "next/link";
 import { useAuth, UserButton, useUser } from "@clerk/nextjs";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
+
+// Define navLinks outside the component to prevent recreation on each render
+const navLinks = [
+  {
+    href: "/flowcharts",
+    icon: "account_tree",
+    label: "Flow Charts",
+    iconType: "rounded",
+  },
+  {
+    href: "/notes",
+    icon: "edit_note",
+    label: "Notes",
+    iconType: "outlined",
+  },
+  {
+    href: "/groups",
+    icon: "groups",
+    label: "Groups",
+    iconType: "outlined",
+  },
+];
 
 export default function SideBar() {
   const { isLoaded, userId } = useAuth();
   const { user } = useUser();
-
   const pathname = usePathname();
+  const [userDisplayName, setUserDisplayName] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      setUserDisplayName(user.username || user.firstName || "");
+    }
+  }, [user]);
 
   console.log(`userId: ${userId}`);
 
@@ -17,26 +44,6 @@ export default function SideBar() {
   if (!isLoaded || !userId || !user) {
     return null;
   }
-
-  // const navLinks = useMemo(() => {
-  //   return [
-  //     {
-  //       href: "/flowcharts",
-  //       icon: "account_tree",
-  //       label: "Flow Charts",
-  //     },
-  //     {
-  //       href: "/notes",
-  //       icon: "edit_note",
-  //       label: "Notes",
-  //     },
-  //     {
-  //       href: "/groups",
-  //       icon: "groups",
-  //       label: "Groups",
-  //     },
-  //   ];
-  // }, [pathname]);
 
   return (
     <span className="p-3 rounded-lg flex h-fit bg-sidebarGradient flex-col select-none tracking-wide text-lg">
@@ -49,67 +56,30 @@ export default function SideBar() {
       <section className="w-full h-14 bg-navBlockBackground rounded-md p-3 text-ellipsis flex-wrap">
         <div className="w-full flex flex-wrap text-ellipsis whitespace-nowrap gap-3 items-center mx-3">
           <span className="flex border-2 border-slate-500 hover:bg-opacity-50 rounded-full">
-            <UserButton afterSignOutUrl="/sign-in"></UserButton>
+            <UserButton afterSignOutUrl="/sign-in" />
           </span>
           <span className="flex select-none">
-            {user.username || user.firstName}
+            {userDisplayName}
           </span>
         </div>
       </section>
 
       <section className="w-full h-auto text-nowrap bg-navBlockBackground rounded-md py-2 my-2">
         <ul className="mx-3">
-          <Link href="/flowcharts">
-            <li
-              className={`flex items-center gap-3 my-2 px-3 hover:bg-navBlockBackgroundHover cursor-pointer p-2 rounded-md select-none ${
-                pathname === "/flowcharts"
-                  ? "bg-selectedFunctionalityBackgroundColor border border-stone-500"
-                  : "bg-transparent"
-              }`}
-            >
-              <span className="material-symbols-rounded">account_tree</span>
-              Flow Charts
-            </li>
-          </Link>
-          <Link href="/notes">
-            <li
-              className={`flex items-center gap-3 my-2 px-3 hover:bg-navBlockBackgroundHover cursor-pointer p-2 rounded-md select-none ${
-                pathname === "/notes"
-                  ? "bg-selectedFunctionalityBackgroundColor border border-stone-500"
-                  : "bg-transparent"
-              }`}
-            >
-              <span className="material-symbols-outlined">edit_note</span>
-              Notes
-            </li>
-          </Link>
-          <Link href="/groups">
-            <li
-              className={`flex items-center gap-3 my-2 px-3 hover:bg-navBlockBackgroundHover cursor-pointer p-2 rounded-md select-none ${
-                pathname === "/groups"
-                  ? "bg-selectedFunctionalityBackgroundColor border border-stone-500"
-                  : "bg-transparent"
-              }`}
-            >
-              <span className="material-symbols-outlined">groups</span>
-              Groups
-            </li>
-          </Link>
-
-          {/* {navLinks.map((link) => (
-            <li
-              key={link.href}
-              className={`flex items-center gap-3 my-2 px-3 hover:bg-navBlockBackgroundHover cursor-pointer p-2 rounded-md select-none ${
-                pathname === link.href
-                  ? "bg-selectedFunctionalityBackgroundColor border border-stone-500"
-                  : "bg-transparent"
-              }`}
-            >
-              <span className={`material-symbols-outlined ${link.icon}`}>
-                {link.label}
-              </span>
-            </li>
-          ))} */}
+          {navLinks.map(({ href, icon, label, iconType }) => (
+            <Link key={href} href={href}>
+              <li
+                className={`flex items-center gap-3 my-2 px-3 hover:bg-navBlockBackgroundHover cursor-pointer p-2 rounded-md select-none ${
+                  pathname === href
+                    ? "bg-selectedFunctionalityBackgroundColor border border-stone-500"
+                    : "bg-transparent"
+                }`}
+              >
+                <span className={`material-symbols-${iconType}`}>{icon}</span>
+                {label}
+              </li>
+            </Link>
+          ))}
         </ul>
       </section>
 
