@@ -3,6 +3,7 @@ import { usePathname } from "next/navigation";
 
 import Link from "next/link";
 import { useAuth, UserButton, useUser } from "@clerk/nextjs";
+import { useMemo } from "react";
 
 export default function SideBar() {
   const { isLoaded, userId } = useAuth();
@@ -16,6 +17,26 @@ export default function SideBar() {
   if (!isLoaded || !userId || !user) {
     return null;
   }
+
+  // const navLinks = useMemo(() => {
+  //   return [
+  //     {
+  //       href: "/flowcharts",
+  //       icon: "account_tree",
+  //       label: "Flow Charts",
+  //     },
+  //     {
+  //       href: "/notes",
+  //       icon: "edit_note",
+  //       label: "Notes",
+  //     },
+  //     {
+  //       href: "/groups",
+  //       icon: "groups",
+  //       label: "Groups",
+  //     },
+  //   ];
+  // }, [pathname]);
 
   return (
     <span className="p-3 rounded-lg flex h-fit bg-sidebarGradient flex-col select-none tracking-wide text-lg">
@@ -74,6 +95,21 @@ export default function SideBar() {
               Groups
             </li>
           </Link>
+
+          {/* {navLinks.map((link) => (
+            <li
+              key={link.href}
+              className={`flex items-center gap-3 my-2 px-3 hover:bg-navBlockBackgroundHover cursor-pointer p-2 rounded-md select-none ${
+                pathname === link.href
+                  ? "bg-selectedFunctionalityBackgroundColor border border-stone-500"
+                  : "bg-transparent"
+              }`}
+            >
+              <span className={`material-symbols-outlined ${link.icon}`}>
+                {link.label}
+              </span>
+            </li>
+          ))} */}
         </ul>
       </section>
 
