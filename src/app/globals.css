@@ -43,7 +43,7 @@
   /* Notes */
   --noteBackgroundGradient: linear-gradient(180deg, #333333, #171717);
   --noteBackground: #252425;
-  --noteEditMode: #252425b3;
+  --noteEditMode: #595959b3;
   
   --noteBorderWhite: #7f7f7f;
   --noteBackgroundWhite: #4f4f4f81;
