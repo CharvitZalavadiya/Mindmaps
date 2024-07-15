@@ -44,6 +44,30 @@
   --noteBackgroundGradient: linear-gradient(180deg, #333333, #171717);
   --noteBackground: #252425;
   --noteEditMode: #252425b3;
+  
+  --noteBorderWhite: #7f7f7f;
+  --noteBackgroundWhite: #4f4f4f81;
+
+  --noteBorderDarkgray: #080808;
+  --noteBackgroundDarkgray: #18181881;
+  
+  --noteBorderGreen: #3acf1c;
+  --noteBackgroundGreen: #3acf1c27;
+  
+  --noteBorderYellow: #dcdf2a;
+  --noteBackgroundYellow: #dcdf2a28;
+  
+  --noteBorderPurple: #a212e4;
+  --noteBackgroundPurple: #a112e418;
+  
+  --noteBorderRed: #dc1818;
+  --noteBackgroundRed: #dc18181f;
+  
+  --noteBorderPink: #cc13b9;
+  --noteBackgroundPink: #cc13b970;
+  
+  --noteBorderCyan: #20c7d3;
+  --noteBackgroundCyan: #20c7d31e;
 }
 
 /* Scrollbar */
