@@ -158,6 +158,7 @@
 import SideBar from "@/app/_sidebar/page";
 import axios from "axios";
 import { useState, useEffect, useMemo, useRef } from "react";
+import TopBar from "../_topbar/page";
 
 interface Note {
   _id: string;
@@ -233,7 +234,8 @@ export default function Notes() {
         description: editedDescription,
       };
 
-      await axios.put(`http://localhost:8080/notes/${selectedNote._id}`, updatedNote);
+      console.log(updatedNote)
+      await axios.post(`http://localhost:8080/notes/${selectedNote._id}`, updatedNote);
       setNotes((prevNotes) =>
         prevNotes.map((note) => (note._id === updatedNote._id ? updatedNote : note))
       );
@@ -290,6 +292,7 @@ export default function Notes() {
       <span>{sidebarComp}</span>
 
       <main className="bg-sidebarGradient rounded-lg tracking-wide leading-relaxed h-[95vh] p-5 ml-3 w-full">
+        <TopBar />
         <ul className="grid grid-cols-4 gap-4 max-h-full overflow-y-scroll">
           {notes.map((note) => (
             <li
@@ -316,14 +319,15 @@ export default function Notes() {
                 type="text"
                 value={editedTitle}
                 onChange={handleTitleChange}
-                className="w-full mb-4 text-xl font-bold px-3 py-2 bg-transparent rounded"
+                className="w-full mb-4 text-xl font-bold px-3 focus:outline-none py-2 bg-transparent rounded"
                 placeholder="Title"
               />
               <textarea
                 value={editedDescription}
                 onChange={handleDescriptionChange}
-                className="w-full mb-4 px-3 py-2 border-none rounded bg-transparent"
+                className="w-full mb-4 px-3 py-2 border-none focus:outline-none rounded bg-transparent"
                 rows={4}
+                style={{ width: '100%', height: '300px', resize: "none" }}
                 placeholder="Description"
               />
               <div className="flex justify-between">

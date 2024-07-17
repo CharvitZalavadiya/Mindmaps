@@ -24,6 +24,12 @@ const navLinks = [
     label: "Groups",
     iconType: "outlined",
   },
+  {
+    href: "/favourites",
+    icon: "star",
+    label: "Favourites",
+    iconType: "outlined",
+  },
 ];
 
 export default function SideBar() {
@@ -83,23 +89,6 @@ export default function SideBar() {
         </ul>
       </section>
 
-      <section>
-        <ul className="flex">
-          <span className="material-symbols-outlined w-1/2 h-auto bg-navBlockBackground rounded-md px-3 py-3 my-0 mr-3 text-center hover:bg-navBlockBackgroundHover cursor-pointer">
-            search
-          </span>
-          <Link
-            href="/favourites"
-            className={`w-1/2 justify-center align-middle h-auto bg-navBlockBackground select-none rounded-md px-3 py-2 my-0 text-center hover:bg-navBlockBackgroundHover cursor-pointer ${
-              pathname === "/favourites"
-                ? "bg-selectedFunctionalityBackgroundColor border border-stone-500"
-                : "bg-navBlockBackground"
-            }`}
-          >
-            <span className="material-symbols-outlined">star</span>
-          </Link>
-        </ul>
-      </section>
     </span>
   );
 }
