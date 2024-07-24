@@ -2,7 +2,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useAuth, UserButton, useUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 // Define navLinks outside the component to prevent recreation on each render
 const navLinks = [
@@ -44,7 +44,7 @@ export default function SideBar() {
     }
   }, [user]);
 
-  console.log(`userId: ${userId}`);
+  // console.log(`userId: ${userId}`);
 
   // In case the user signs out while on the page.
   if (!isLoaded || !userId || !user) {

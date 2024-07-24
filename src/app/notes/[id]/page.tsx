@@ -1,14 +1,11 @@
-import Notes from "../page";
+import { useRouter } from "next/router";
+import Notes from "../page"; // Adjust the path according to your directory structure
 
-const NoteUpdate = () => {
-  return (
-    <div className="relative">
-      <span className="relative">
-        <Notes />
-      </span>
-      <span className="text-5xl bg-noteBackground">hello</span>
-    </div>
-  );
+const NotePage = () => {
+  const router = useRouter();
+  const { id } = router.query;
+
+  return <Notes />;
 };
 
-export default NoteUpdate;
+export default NotePage;

@@ -27,6 +27,8 @@ app.listen(8080, async () => {
   await connectToDatabase();
 });
 
+// fetching the notes
+
 app.get("/notes", async (req, res) => {
   try {
     const collection = db.collection("Note"); // Replace with your collection name
@@ -35,6 +37,31 @@ app.get("/notes", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).send("Error retrieving data");
+  }
+});
+
+// Creating a new note
+app.post("/notes", async (req, res) => {
+  const { title, description, color, userId } = req.body;
+
+  if (!title || !description || !userId) {
+    return res.status(400).send({ message: "Title, description, and userId are required" });
+  }
+
+  try {
+    const collection = db.collection("Note"); // Replace with your collection name
+    const newNote = {
+      title,
+      description,
+      color,
+      userId,
+    };
+
+    const result = await collection.insertOne(newNote);
+    res.status(201).json(result.ops[0]);
+  } catch (err) {
+    console.error("Error creating note:", err);
+    res.status(500).send("Internal Server Error");
   }
 });
 

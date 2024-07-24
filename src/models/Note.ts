@@ -23,6 +23,7 @@ const NoteSchema: Schema = new Schema(
     },
     color: {
       type: String,
+      default: 'gray',
       required: true,
     },
   },
