@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface TopBarProps {
   onSearch: (query: string) => void;
   onCreateNote: () => void;
-  onColorChange: (color: string) => void; // New prop
+  onColorChange: (color: string) => void;
+  selectedColor: string; // New prop
 }
 
-const TopBar: React.FC<TopBarProps> = ({ onSearch, onCreateNote, onColorChange }) => {
+const TopBar: React.FC<TopBarProps> = ({
+  onSearch,
+  onCreateNote,
+  onColorChange,
+  selectedColor // Destructure the new prop
+}) => {
   const [searchText, setSearchText] = useState("");
-  const [selectedColor, setSelectedColor] = useState("black");
 
   const colorArray = [
     "black",
@@ -51,7 +56,6 @@ const TopBar: React.FC<TopBarProps> = ({ onSearch, onCreateNote, onColorChange }
   };
 
   const handleColorClick = (color: string) => {
-    setSelectedColor(color);
     onColorChange(color); // Notify parent of color change
   };
 

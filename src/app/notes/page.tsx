@@ -118,11 +118,12 @@ const Notes: React.FC = () => {
     setSelectedNote(null);
     setEditedTitle("");
     setEditedDescription("");
+    setSelectedColor("black");
   };
 
   const handleSaveChanges = async () => {
     if (!selectedNote) return;
-  
+
     try {
       const updatedNote = {
         ...selectedNote,
@@ -130,27 +131,26 @@ const Notes: React.FC = () => {
         description: editedDescription,
         color: selectedColor,
       };
-  
+
       await axios.post(
         `http://localhost:8080/notes/${selectedNote._id}`,
         updatedNote
       );
-  
+
       // Update notes and reset filteredNotes to include all notes
       setNotes((prevNotes) =>
         prevNotes.map((note) =>
           note._id === updatedNote._id ? updatedNote : note
         )
       );
-  
-      // setFilteredNotes(notes); // Reset filteredNotes to include all notes
-  
+
+      setSelectedColor("black");
+
       closePopup();
     } catch (error) {
       console.error("Error updating note:", error);
     }
   };
-  
 
   const handleDeleteNote = async () => {
     if (!selectedNote) return;
@@ -160,6 +160,9 @@ const Notes: React.FC = () => {
       setNotes((prevNotes) =>
         prevNotes.filter((note) => note._id !== selectedNote._id)
       );
+
+      setSelectedColor("black");
+
       closePopup();
     } catch (error) {
       console.error("Error deleting note:", error);
@@ -234,7 +237,12 @@ const Notes: React.FC = () => {
 
       <main className="bg-sidebarGradient rounded-lg tracking-wide leading-relaxed h-[95vh] overflow-y-scroll p-5 ml-3 w-full">
         <span className="top-0 sticky">
-          <TopBar onSearch={handleSearch} onCreateNote={handleCreateNewNote} onColorChange={handleColorChange} />
+          <TopBar 
+            onSearch={handleSearch} 
+            onCreateNote={handleCreateNewNote} 
+            onColorChange={handleColorChange}
+            selectedColor={selectedColor} // Pass the current selected color to TopBar
+          />
         </span>
         <span>
           <ul className="grid grid-cols-4 gap-4 max-h-full overflow-y-scroll">
@@ -281,9 +289,8 @@ const Notes: React.FC = () => {
               <div className="flex">
                 <span className="rounded py-1 px-3 w-1/2 overflow-x-auto flex gap-2">
                   {colorArray.map((color) => (
-                    <ul className="py-1">
+                    <ul className="py-1" key={color}>
                       <li
-                        key={color}
                         className={`${returnBgforPopup(
                           color
                         )} w-6 h-6 rounded-full hover:cursor-pointer ${
