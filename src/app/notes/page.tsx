@@ -31,16 +31,20 @@ const Notes: React.FC = () => {
     const fetchNotes = async () => {
       try {
         const response = await axios.get<Note[]>("http://localhost:8080/notes");
-        setNotes(response.data);
-        setFilteredNotes(response.data); // Initialize filtered notes with all notes
+        // Filter notes to include only those belonging to the current user
+        const userNotes = response.data.filter(note => note.userId === userId);
+        setNotes(userNotes);
+        setFilteredNotes(userNotes); // Initialize filtered notes with user's notes
         console.log(response);
       } catch (error) {
         console.error("Error fetching notes:", error);
       }
     };
 
-    fetchNotes();
-  }, []);
+    if (userId) {
+      fetchNotes();
+    }
+  }, [userId]);
 
   useEffect(() => {
     // Filter notes based on search query and selected color
@@ -271,22 +275,24 @@ const Notes: React.FC = () => {
               ref={popupRef}
               className="bg-noteEditMode backdrop-blur-md rounded-lg p-6 w-2/3 h-3/4"
             >
-              <input
-                type="text"
-                value={editedTitle}
-                onChange={(e) => setEditedTitle(e.target.value)}
-                className="w-full mb-4 text-xl font-bold px-3 focus:outline-none py-2 bg-transparent rounded"
-                placeholder="Title"
-              />
-              <textarea
-                value={editedDescription}
-                onChange={(e) => setEditedDescription(e.target.value)}
-                className="w-full mb-4 px-3 py-2 border-none focus:outline-none rounded bg-transparent"
-                rows={4}
-                style={{ width: "100%", height: "300px", resize: "none" }}
-                placeholder="Description"
-              />
-              <div className="flex">
+              <div className="h-[90%]">
+                <input
+                  type="text"
+                  value={editedTitle}
+                  onChange={(e) => setEditedTitle(e.target.value)}
+                  className="w-full mb-4 text-xl font-bold px-3 focus:outline-none py-2 bg-transparent rounded"
+                  placeholder="Title"
+                />
+                <textarea
+                  value={editedDescription}
+                  onChange={(e) => setEditedDescription(e.target.value)}
+                  className="w-full mb-4 px-3 py-2 border-none focus:outline-none rounded bg-transparent"
+                  rows={4}
+                  style={{ width: "100%", height: "80%", resize: "none" }}
+                  placeholder="Description"
+                />
+              </div>
+              <div className="flex h-[10%]">
                 <span className="rounded py-1 px-3 w-1/2 overflow-x-auto flex gap-2">
                   {colorArray.map((color) => (
                     <ul className="py-1" key={color}>

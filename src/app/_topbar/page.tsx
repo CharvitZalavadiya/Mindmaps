@@ -62,6 +62,7 @@ const TopBar: React.FC<TopBarProps> = ({
   return (
     <div className="flex gap-3 mb-3 justify-evenly backdrop-blur-lg">
       <div className="flex gap-3 w-2/3">
+      <span className="material-symbols-outlined py-2 hidden">menu</span>
         <span className="w-full bg-navBlockBackground rounded-full py-1 px-1 flex">
           <span className="material-symbols-outlined rounded-full p-1 px-2 select-none hover:cursor-pointer">
             search
