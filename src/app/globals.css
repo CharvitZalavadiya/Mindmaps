@@ -130,3 +130,27 @@
 .cl-internal-lqfubk {
   display: none;
 }
+
+/* Sidebar Responsive */
+@media screen and (max-width: 850px) {
+  .cssMenu {
+    display: block;
+  }
+
+  .cssSidebar {
+    position: absolute;
+    z-index: 10;
+    left: 80px;
+    top: 12px;
+    background: #2d2d2d;
+  }
+
+  .cssMenuCloseButton {
+    display: block;
+  }
+
+  .cssMainCompNotes {
+    width: 100%;
+    position: relative;
+  }
+}

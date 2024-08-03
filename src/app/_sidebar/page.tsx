@@ -32,7 +32,11 @@ const navLinks = [
   },
 ];
 
-export default function SideBar() {
+interface SideBarProps {
+  onClose: () => void;
+}
+
+export default function SideBar({ onClose }: SideBarProps) {
   const { isLoaded, userId } = useAuth();
   const { user } = useUser();
   const pathname = usePathname();
@@ -52,9 +56,13 @@ export default function SideBar() {
   }
 
   return (
-    <span className="p-3 rounded-lg flex h-fit bg-sidebarGradient flex-col select-none tracking-wide text-lg">
-      <section className="text-lg font-semibold tracking-wider bg-headingTextGradient h-6 flex items-center justify-center w-full bg-clip-text text-transparent">
+    <span className="cssSidebar p-3 rounded-lg flex h-fit bg-sidebarGradient flex-col select-none tracking-wide text-lg">
+      <section className="text-lg font-semibold tracking-wider bg-headingTextGradient h-6 flex items-center justify-around w-full bg-clip-text text-transparent">
+        <span>
+
         Mind Maps
+        </span>
+        <span className="material-symbols-outlined text-gray-400 text-3xl hidden cssMenuCloseButton" onClick={onClose}>close</span>
       </section>
 
       <span className="w-full h-px rounded-full my-2 bg-dividerGradient"></span>

@@ -22,6 +22,7 @@ const Notes: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredNotes, setFilteredNotes] = useState<Note[]>([]);
   const [selectedColor, setSelectedColor] = useState<string>("black");
+  const [isSidebarVisible, setIsSidebarVisible] = useState<boolean>(true);
   const popupRef = useRef<HTMLDivElement>(null);
 
   const { userId } = useAuth();
@@ -32,7 +33,9 @@ const Notes: React.FC = () => {
       try {
         const response = await axios.get<Note[]>("http://localhost:8080/notes");
         // Filter notes to include only those belonging to the current user
-        const userNotes = response.data.filter(note => note.userId === userId);
+        const userNotes = response.data.filter(
+          (note) => note.userId === userId
+        );
         setNotes(userNotes);
         setFilteredNotes(userNotes); // Initialize filtered notes with user's notes
         console.log(response);
@@ -45,6 +48,16 @@ const Notes: React.FC = () => {
       fetchNotes();
     }
   }, [userId]);
+
+  const handleToggleSidebar = () => {
+    setIsSidebarVisible(!isSidebarVisible);
+  };
+
+  const handleCloseSidebar = () => {
+    if (isSidebarVisible) {
+      setIsSidebarVisible(false);
+    }
+  };
 
   useEffect(() => {
     // Filter notes based on search query and selected color
@@ -109,7 +122,7 @@ const Notes: React.FC = () => {
     }
   };
 
-  const sidebarComp = useMemo(() => <SideBar />, []);
+  // const sidebarComp = useMemo(() => <SideBar />, []);
 
   const openPopup = (note: Note) => {
     setSelectedNote(note);
@@ -237,15 +250,21 @@ const Notes: React.FC = () => {
 
   return (
     <div className="flex p-3">
-      <span>{sidebarComp}</span>
+      <span>
+        {/* {isSidebarVisible && sidebarComp} */}
+        {isSidebarVisible && (
+            <SideBar onClose={handleToggleSidebar} />
+        )}
+      </span>
 
-      <main className="bg-sidebarGradient rounded-lg tracking-wide leading-relaxed h-[95vh] overflow-y-scroll p-5 ml-3 w-full">
+      <main className="cssMainCompNotes bg-sidebarGradient rounded-lg tracking-wide leading-relaxed h-[95vh] overflow-y-scroll p-5 ml-3 w-full">
         <span className="top-0 sticky">
-          <TopBar 
-            onSearch={handleSearch} 
-            onCreateNote={handleCreateNewNote} 
+          <TopBar
+            onSearch={handleSearch}
+            onCreateNote={handleCreateNewNote}
             onColorChange={handleColorChange}
             selectedColor={selectedColor} // Pass the current selected color to TopBar
+            onToggleSidebar={handleToggleSidebar}
           />
         </span>
         <span>
@@ -338,3 +357,4 @@ const Notes: React.FC = () => {
 };
 
 export default Notes;
+
